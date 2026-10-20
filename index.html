@@ -1,133 +1,328 @@
 <!DOCTYPE html>
 <html lang="sv">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Min Mobil Dashboard - Örebro / Kumla</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#111827">
+  <title>Örebro & Kumla Dashboard</title>
+
+  <style>
+    :root {
+      --bg: #f3f4f6;
+      --card: #ffffff;
+      --text: #111827;
+      --muted: #6b7280;
+      --border: #e5e7eb;
+      --primary: #2563eb;
+      --danger: #dc2626;
+      --warning: #f59e0b;
+      --success: #16a34a;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #111827;
+        --card: #1f2937;
+        --text: #f9fafb;
+        --muted: #9ca3af;
+        --border: #374151;
+      }
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family:
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+    }
+
+    .app {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    header h1 {
+      font-size: 22px;
+      margin: 0;
+    }
+
+    header p {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .status {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .status-pill {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 7px 11px;
+      font-size: 12px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 16px;
+      margin-bottom: 14px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .card-title {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-size: 17px;
+      font-weight: 700;
+    }
+
+    .updated {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    /* Väder */
+
+    .current-weather {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .weather-icon {
+      font-size: 48px;
+    }
+
+    .temperature {
+      font-size: 42px;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .weather-description {
+      color: var(--muted);
+      margin-top: 5px;
+    }
+
+    .weather-details {
+      text-align: right;
+      font-size: 13px;
+      line-height: 1.8;
+    }
+
+    .forecast {
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: minmax(65px, 1fr);
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 5px;
+    }
+
+    .forecast-item {
+      text-align: center;
+      padding: 9px 5px;
+      border-radius: 12px;
+      background: rgba(127, 127, 127, 0.08);
+      min-width: 65px;
+    }
+
+    .forecast-time {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .forecast-icon {
+      font-size: 22px;
+      margin: 7px 0;
+    }
+
+    .forecast-temp {
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .rain {
+      font-size: 11px;
+      color: #2563eb;
+      margin-top: 5px;
+    }
+
+    .storm {
+      font-size: 11px;
+      color: #7c3aed;
+      margin-top: 3px;
+      font-weight: 700;
+    }
+
+    /* Händelser */
+
+    .event {
+      display: grid;
+      grid-template-columns: 42px 1fr auto;
+      gap: 10px;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .event:last-child {
+      border-bottom: 0;
+    }
+
+    .event-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      font-size: 20px;
+      background: rgba(220, 38, 38, 0.1);
+    }
+
+    .event-title {
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .event-location {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 3px;
+    }
+
+    .event-time {
+      font-size: 11px;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .event-type {
+      display: inline-block;
+      font-size: 10px;
+      border-radius: 999px;
+      padding: 3px 7px;
+      margin-top: 5px;
+      background: rgba(127, 127, 127, 0.12);
+    }
+
+    /* Kris */
+
+    .alert {
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 10px;
+      border-left: 4px solid var(--warning);
+      background: rgba(245, 158, 11, 0.08);
+    }
+
+    .alert:last-child {
+      margin-bottom: 0;
+    }
+
+    .alert-title {
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+
+    .alert-text {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .no-alert {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      padding: 13px;
+      border-radius: 14px;
+      background: rgba(22, 163, 74, 0.08);
+      color: var(--success);
+      font-weight: 600;
+    }
+
+    .source {
+      margin-top: 12px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    @media (min-width: 700px) {
+      .app {
+        padding: 30px;
+      }
+    }
+  </style>
 </head>
-<body class="bg-slate-900 text-slate-100 min-h-screen pb-12 font-sans selection:bg-indigo-500 selection:text-white">
 
-    <!-- Header & Theme Toggle -->
-    <header class="sticky top-0 z-50 bg-slate-900/80 backdrop-blur-md border-b border-slate-800 px-4 py-3 flex justify-between items-center">
-        <div>
-            <h1 class="text-lg font-bold tracking-tight bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">Min Dashboard</h1>
-            <p class="text-xs text-slate-400" id="current-time">Laddar tid...</p>
-        </div>
-        <div class="flex items-center gap-2">
-            <button onclick="location.reload()" class="w-9 h-9 rounded-full bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-slate-300 transition" title="Uppdatera">
-                <i class="fa-solid fa-rotate"></i>
-            </button>
-        </div>
-    </header>
+<body>
 
-    <main class="max-w-md mx-auto p-4 space-y-4">
+<div class="app">
 
-        <!-- Sökfält -->
-        <section class="bg-slate-800/60 border border-slate-700/60 rounded-2xl p-3 shadow-lg">
-            <form id="search-form" action="https://www.google.com/search" method="get" target="_blank" class="flex flex-col gap-2">
-                <div class="relative flex items-center">
-                    <span id="search-icon" class="absolute left-3 text-indigo-400"><i class="fa-brands fa-google"></i></span>
-                    <input type="text" name="q" id="search-input" placeholder="Sök på Google..." class="w-full bg-slate-900/90 text-slate-100 placeholder-slate-500 text-sm rounded-xl pl-9 pr-4 py-2.5 border border-slate-700 focus:outline-none focus:border-indigo-500 transition">
-                </div>
-                <div class="flex justify-between items-center px-1 pt-1">
-                    <div class="flex gap-1.5 text-xs">
-                        <button type="button" onclick="setSearchEngine('google')" class="engine-btn px-2.5 py-1 rounded-lg bg-indigo-600 text-white font-medium transition" data-engine="google">Google</button>
-                        <button type="button" onclick="setSearchEngine('bing')" class="engine-btn px-2.5 py-1 rounded-lg bg-slate-700 hover:bg-slate-600 text-slate-300 transition" data-engine="bing">Bing</button>
-                        <button type="button" onclick="setSearchEngine('duckduckgo')" class="engine-btn px-2.5 py-1 rounded-lg bg-slate-700 hover:bg-slate-600 text-slate-300 transition" data-engine="duckduckgo">Duck</button>
-                        <button type="button" onclick="setSearchEngine('wikipedia')" class="engine-btn px-2.5 py-1 rounded-lg bg-slate-700 hover:bg-slate-600 text-slate-300 transition" data-engine="wikipedia">Wiki</button>
-                    </div>
-                    <button type="submit" class="bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1 rounded-lg text-xs font-medium transition">Sök</button>
-                </div>
-            </form>
-        </section>
+  <header>
+    <div>
+      <h1>📍 Örebro & Kumla</h1>
+      <p>Min dashboard</p>
+    </div>
 
-        <!-- 1. Väder (Yr) -->
-        <section class="bg-slate-800/60 border border-slate-700/60 rounded-2xl p-4 shadow-lg">
-            <div class="flex justify-between items-center mb-2">
-                <h2 class="text-sm font-semibold text-indigo-400 flex items-center gap-2">
-                    <i class="fa-solid fa-cloud-sun"></i> Väder (Yr) – Kumla
-                </h2>
-                <a href="https://www.yr.no/en/forecast/daily-table/2-2691518/Sweden/Örebro/Kumla" target="_blank" class="text-xs text-slate-400 hover:text-indigo-300">Yr.no <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i></a>
-            </div>
-            <div class="flex items-center justify-between bg-slate-900/50 rounded-xl p-3 border border-slate-700/40">
-                <div class="flex items-center gap-3">
-                    <i class="fa-solid fa-cloud-sun text-3xl text-amber-400"></i>
-                    <div>
-                        <div class="text-2xl font-bold">+8°C</div>
-                        <div class="text-xs text-slate-400">Delvis molnigt</div>
-                    </div>
-                </div>
-                <div class="text-right text-xs text-slate-300 space-y-0.5">
-                    <div> Vind: 3 m/s</div>
-                    <div> Nederbörd: 0 mm</div>
-                </div>
-            </div>
-        </section>
+    <div>
+      <strong id="clock">--:--</strong>
+    </div>
+  </header>
 
-        <!-- 2. Elpris (Nord Pool) -->
-        <section class="bg-slate-800/60 border border-slate-700/60 rounded-2xl p-4 shadow-lg">
-            <div class="flex justify-between items-center mb-2">
-                <h2 class="text-sm font-semibold text-amber-400 flex items-center gap-2">
-                    <i class="fa-solid fa-bolt"></i> Elpris (SE3 - Örebro/Kumla)
-                </h2>
-                <a href="https://www.elprisetjustnu.se" target="_blank" class="text-xs text-slate-400 hover:text-amber-300">Detaljer <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i></a>
-            </div>
-            <div class="grid grid-cols-3 gap-2 text-center">
-                <div class="bg-slate-900/50 p-2.5 rounded-xl border border-slate-700/40">
-                    <div class="text-[10px] text-slate-400 uppercase tracking-wider">Just nu</div>
-                    <div class="text-lg font-bold text-emerald-400">45.2 <span class="text-xs font-normal">öre</span></div>
-                </div>
-                <div class="bg-slate-900/50 p-2.5 rounded-xl border border-slate-700/40">
-                    <div class="text-[10px] text-slate-400 uppercase tracking-wider">Lägst idag</div>
-                    <div class="text-lg font-bold text-cyan-400">12.1 <span class="text-xs font-normal">öre</span></div>
-                </div>
-                <div class="bg-slate-900/50 p-2.5 rounded-xl border border-slate-700/40">
-                    <div class="text-[10px] text-slate-400 uppercase tracking-wider">Högst idag</div>
-                    <div class="text-lg font-bold text-rose-400">88.5 <span class="text-xs font-normal">öre</span></div>
-                </div>
-            </div>
-        </section>
 
-        <!-- Blåljus & Händelser (Polis, Brandkår, Ambulans) -->
-        <section class="bg-slate-800/60 border border-slate-700/60 rounded-2xl p-4 shadow-lg">
-            <div class="flex justify-between items-center mb-2">
-                <h2 class="text-sm font-semibold text-rose-400 flex items-center gap-2">
-                    <i class="fa-solid fa-triangle-exclamation"></i> Blåljus & Utryckningar (Örebro/Kumla)
-                </h2>
-                <a href="https://polisen.se/aktuellt/handelser/" target="_blank" class="text-xs text-slate-400 hover:text-rose-300">Polisen <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i></a>
-            </div>
-            <div class="space-y-2 text-xs">
-                <div class="bg-slate-900/50 p-2.5 rounded-xl border border-slate-700/40">
-                    <div class="flex justify-between text-slate-400 mb-1">
-                        <span class="text-rose-400 font-medium"><i class="fa-solid fa-car-crash"></i> Trafikolycka, E20 Kumla</span>
-                        <span>14:20</span>
-                    </div>
-                    <p class="text-slate-300">Kollision mellan två personbilar i höjd med Trafikplats Visslan. Mindre personskador, begränsad framkomlighet.</p>
-                </div>
-                <div class="bg-slate-900/50 p-2.5 rounded-xl border border-slate-700/40">
-                    <div class="flex justify-between text-slate-400 mb-1">
-                        <span class="text-amber-400 font-medium"><i class="fa-solid fa-shield-halved"></i> Stöld/Inbrott, Örebro</span>
-                        <span>11:05</span>
-                    </div>
-                    <p class="text-slate-300">Inbrott i villa i Norrby. Polis har genomfört brottsplatsundersökning.</p>
-                </div>
-            </div>
-        </section>
+  <!-- STATUS -->
 
-        <!-- MSB & SOS Alarm -->
-        <div class="grid grid-cols-2 gap-3">
-            <section class="bg-slate-800/60 border border-slate-700/60 rounded-2xl p-3 shadow-lg flex flex-col justify-between">
-                <div>
-                    <div class="flex justify-between items-center mb-1">
-                        <h2 class="text-xs font-semibold text-cyan-400 flex items-center gap-1.5">
-                            <i class="fa-solid fa-shield"></i> MSB Örebro Län
-                        </h2>
-                    </div>
-                    <p class="text-[11px] text-slate-300 leading-snug">Inga aktiva VMA (Viktigt meddelande till allmänheten) i länet f.n.</p>
-                </div>
-                <a href="https://www.msb.se" target="_blank" class="text-[10px] text-cyan-400 mt-2 hover:underline">Besök MSB &rarr;</a>
-            </section>
-            
-            <section class="bg-slate-800/60 border border-slate-700/6
+  <div class="status">
+
+    <div class="status-pill">
+      🌦️ Kumla
+    </div>
+
+    <div class="status-pill">
+      🚨 <span id="eventCount">2</span> händelser
+    </div>
+
+    <div class="status-pill">
+      🆘 Inga VMA
+    </div>
+
+  </div>
+
+
+  <!-- VÄDER -->
