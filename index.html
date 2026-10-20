@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Min Mobil Dashboard - Örebro / Kumla</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen pb-12 font-sans selection:bg-indigo-500 selection:text-white">
+
+    <!-- Header & Theme Toggle -->
+    <header class="sticky top-0 z-50 bg-slate-900/80 backdrop-blur-md border-b border-slate-800 px-4 py-3 flex justify-between items-center">
+        <div>
+            <h1 class="text-lg font-bold tracking-tight bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">Min Dashboard</h1>
+            <p class="text-xs text-slate-400" id="current-time">Laddar tid...</p>
+        </div>
+        <div class="flex items-center gap-2">
+            <button onclick="location.reload()" class="w-9 h-9 rounded-full bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-slate-300 transition" title="Uppdatera">
+                <i class="fa-solid fa-rotate"></i>
+            </button>
+        </div>
+    </header>
+
+    <main class="max-w-md mx-auto p-4 space-y-4">
+
+        <!-- Sökfält -->
+        <section class="bg-slate-800/60 border border-slate-700/60 rounded-2xl p-3 shadow-lg">
+            <form id="search-form" action="https://www.google.com/search" method="get" target="_blank" class="flex flex-col gap-2">
+                <div class="relative flex items-center">
+                    <span id="search-icon" class="absolute left-3 text-indigo-400"><i class="fa-brands fa-google"></i></span>
+                    <input type="text" name="q" id="search-input" placeholder="Sök på Google..." class="w-full bg-slate-900/90 text-slate-100 placeholder-slate-500 text-sm rounded-xl pl-9 pr-4 py-2.5 border border-slate-700 focus:outline-none focus:border-indigo-500 transition">
+                </div>
+                <div class="flex justify-between items-center px-1 pt-1">
+                    <div class="flex gap-1.5 text-xs">
+                        <button type="button" onclick="setSearchEngine('google')" class="engine-btn px-2.5 py-1 rounded-lg bg-indigo-600 text-white font-medium transition" data-engine="google">Google</button>
+                        <button type="button" onclick="setSearchEngine('bing')" class="engine-btn px-2.5 py-1 rounded-lg bg-slate-700 hover:bg-slate-600 text-slate-300 transition" data-engine="bing">Bing</button>
+                        <button type="button" onclick="setSearchEngine('duckduckgo')" class="engine-btn px-2.5 py-1 rounded-lg bg-slate-700 hover:bg-slate-600 text-slate-300 transition" data-engine="duckduckgo">Duck</button>
+                        <button type="button" onclick="setSearchEngine('wikipedia')" class="engine-btn px-2.5 py-1 rounded-lg bg-slate-700 hover:bg-slate-600 text-slate-300 transition" data-engine="wikipedia">Wiki</button>
+                    </div>
+                    <button type="submit" class="bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1 rounded-lg text-xs font-medium transition">Sök</button>
+                </div>
+            </form>
+        </section>
+
+        <!-- 1. Väder (Yr) -->
+        <section class="bg-slate-800/60 border border-slate-700/60 rounded-2xl p-4 shadow-lg">
+            <div class="flex justify-between items-center mb-2">
+                <h2 class="text-sm font-semibold text-indigo-400 flex items-center gap-2">
+                    <i class="fa-solid fa-cloud-sun"></i> Väder (Yr) – Kumla
+                </h2>
+                <a href="https://www.yr.no/en/forecast/daily-table/2-2691518/Sweden/Örebro/Kumla" target="_blank" class="text-xs text-slate-400 hover:text-indigo-300">Yr.no <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i></a>
+            </div>
+            <div class="flex items-center justify-between bg-slate-900/50 rounded-xl p-3 border border-slate-700/40">
+                <div class="flex items-center gap-3">
+                    <i class="fa-solid fa-cloud-sun text-3xl text-amber-400"></i>
+                    <div>
+                        <div class="text-2xl font-bold">+8°C</div>
+                        <div class="text-xs text-slate-400">Delvis molnigt</div>
+                    </div>
+                </div>
+                <div class="text-right text-xs text-slate-300 space-y-0.5">
+                    <div> Vind: 3 m/s</div>
+                    <div> Nederbörd: 0 mm</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. Elpris (Nord Pool) -->
+        <section class="bg-slate-800/60 border border-slate-700/60 rounded-2xl p-4 shadow-lg">
+            <div class="flex justify-between items-center mb-2">
+                <h2 class="text-sm font-semibold text-amber-400 flex items-center gap-2">
+                    <i class="fa-solid fa-bolt"></i> Elpris (SE3 - Örebro/Kumla)
+                </h2>
+                <a href="https://www.elprisetjustnu.se" target="_blank" class="text-xs text-slate-400 hover:text-amber-300">Detaljer <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i></a>
+            </div>
+            <div class="grid grid-cols-3 gap-2 text-center">
+                <div class="bg-slate-900/50 p-2.5 rounded-xl border border-slate-700/40">
+                    <div class="text-[10px] text-slate-400 uppercase tracking-wider">Just nu</div>
+                    <div class="text-lg font-bold text-emerald-400">45.2 <span class="text-xs font-normal">öre</span></div>
+                </div>
+                <div class="bg-slate-900/50 p-2.5 rounded-xl border border-slate-700/40">
+                    <div class="text-[10px] text-slate-400 uppercase tracking-wider">Lägst idag</div>
+                    <div class="text-lg font-bold text-cyan-400">12.1 <span class="text-xs font-normal">öre</span></div>
+                </div>
+                <div class="bg-slate-900/50 p-2.5 rounded-xl border border-slate-700/40">
+                    <div class="text-[10px] text-slate-400 uppercase tracking-wider">Högst idag</div>
+                    <div class="text-lg font-bold text-rose-400">88.5 <span class="text-xs font-normal">öre</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Blåljus & Händelser (Polis, Brandkår, Ambulans) -->
+        <section class="bg-slate-800/60 border border-slate-700/60 rounded-2xl p-4 shadow-lg">
+            <div class="flex justify-between items-center mb-2">
+                <h2 class="text-sm font-semibold text-rose-400 flex items-center gap-2">
+                    <i class="fa-solid fa-triangle-exclamation"></i> Blåljus & Utryckningar (Örebro/Kumla)
+                </h2>
+                <a href="https://polisen.se/aktuellt/handelser/" target="_blank" class="text-xs text-slate-400 hover:text-rose-300">Polisen <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i></a>
+            </div>
+            <div class="space-y-2 text-xs">
+                <div class="bg-slate-900/50 p-2.5 rounded-xl border border-slate-700/40">
+                    <div class="flex justify-between text-slate-400 mb-1">
+                        <span class="text-rose-400 font-medium"><i class="fa-solid fa-car-crash"></i> Trafikolycka, E20 Kumla</span>
+                        <span>14:20</span>
+                    </div>
+                    <p class="text-slate-300">Kollision mellan två personbilar i höjd med Trafikplats Visslan. Mindre personskador, begränsad framkomlighet.</p>
+                </div>
+                <div class="bg-slate-900/50 p-2.5 rounded-xl border border-slate-700/40">
+                    <div class="flex justify-between text-slate-400 mb-1">
+                        <span class="text-amber-400 font-medium"><i class="fa-solid fa-shield-halved"></i> Stöld/Inbrott, Örebro</span>
+                        <span>11:05</span>
+                    </div>
+                    <p class="text-slate-300">Inbrott i villa i Norrby. Polis har genomfört brottsplatsundersökning.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- MSB & SOS Alarm -->
+        <div class="grid grid-cols-2 gap-3">
+            <section class="bg-slate-800/60 border border-slate-700/60 rounded-2xl p-3 shadow-lg flex flex-col justify-between">
+                <div>
+                    <div class="flex justify-between items-center mb-1">
+                        <h2 class="text-xs font-semibold text-cyan-400 flex items-center gap-1.5">
+                            <i class="fa-solid fa-shield"></i> MSB Örebro Län
+                        </h2>
+                    </div>
+                    <p class="text-[11px] text-slate-300 leading-snug">Inga aktiva VMA (Viktigt meddelande till allmänheten) i länet f.n.</p>
+                </div>
+                <a href="https://www.msb.se" target="_blank" class="text-[10px] text-cyan-400 mt-2 hover:underline">Besök MSB &rarr;</a>
+            </section>
+            
+            <section class="bg-slate-800/60 border border-slate-700/6
